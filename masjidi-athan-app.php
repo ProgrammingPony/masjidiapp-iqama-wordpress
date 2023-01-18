@@ -55,19 +55,20 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
                 MasjidiApp_Iqama_Plugin::$masjid_id_id,
                 'Masjid ID',
                 function () {
-                    return MasjidiApp_Iqama_Plugin::render_settings_field( MasjidiApp_Iqama_Plugin::$masjid_id_id );
+                    return MasjidiApp_Iqama_Plugin::render_settings_field( MasjidiApp_Iqama_Plugin::$masjid_id_id, true );
                 },
                 MasjidiApp_Iqama_Plugin::$menu_slug,
                 MasjidiApp_Iqama_Plugin::$settings_section_id);
 
         }
 
-        public static function render_settings_field( $name, $default_value = '' ) {
+        public static function render_settings_field( $name, $required = false, $default_value = '' ) {
             $options = get_option( MasjidiApp_Iqama_Plugin::$settings_id );
             ?>
                 <input type="text" 
                     name="<?php echo esc_attr( MasjidiApp_Iqama_Plugin::$settings_id . '[' . $name . ']' ); ?>" 
-                    value="<?php echo isset( $options[ $name ] ) ? $options[ $name ] : esc_attr( $default_value ); ?>"/>
+                    value="<?php echo isset( $options[ $name ] ) ? $options[ $name ] : esc_attr( $default_value ); ?>"
+                    <?php if ($required) echo 'required' ?> />
             <?php
         }
 
