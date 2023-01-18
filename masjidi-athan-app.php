@@ -38,7 +38,7 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
 
             add_settings_section(
                 MasjidiApp_Iqama_Plugin::$settings_section_id,
-                'Settings',
+                'Default Settings',
                 'MasjidiApp_Iqama_Plugin::render_settings_section_header',
                 MasjidiApp_Iqama_Plugin::$menu_slug);
             
@@ -105,6 +105,9 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
             ?>
             <div class="wrap">
                 <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+
+                <p>The API Key may become mandatory in a future version. To avoid interuption on plugin update, please <a href="https://stream.masjidiapp.com/masjidiapp/2021/02/16/masjidi-api/" target="_blank">acquire one</a> as soon as possible.</p>
+
                 <form action="options.php" method="post">
                 <?php
                     // output security fields for the registered setting "wporg_options"
