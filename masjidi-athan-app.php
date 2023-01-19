@@ -140,40 +140,40 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
 
             ob_start();
             ?>
-            
-            <div>
-                <div>
+
+            <div style='margin-right: auto; margin-left: auto; display:flex; flex-wrap: wrap;'>
+                <div style='min-width: 160px;'>
                     <span style='display:block; font-weight:bold;'>Fajr</span>
                     <span id='custom-fajr-start-span' style='display:block;'>Start: <?php echo $fajr_start?></span>
                     <span id='custom-fajr-iqama-span' style='display:block;'>Iqama: <?php echo $fajr_iqama?></span>
                 </div>
 
-                <div>
+                <div style='min-width: 160px;'>
                     <span style='display:block; font-weight:bold;'>Dhuhr</span>
                     <span id='custom-dhuhr-start-span' style='display:block;'>Start: <?php echo $dhuhr_start?></span>
                     <span id='custom-dhuhr-iqama-span' style='display:block;'>Iqama: <?php echo $dhuhr_iqama?></span>
                 </div>
 
-                <div>
+                <div style='min-width: 160px;'>
                     <span style='display:block; font-weight:bold;'>Asr</span>
                     <span id='custom-asr-start-span' style='display:block;'>Start: <?php echo $asr_start?></span>
                     <span id='custom-asr-iqama-span' style='display:block;'>Iqama: <?php echo $asr_iqama?></span>
                 </div>
 
-                <div>
+                <div style='min-width: 160px;'>
                     <span style='display:block; font-weight:bold;'>Maghrib</span>
                     <span id='custom-maghrib-start-span' style='display:block;'>Start: <?php echo $maghrib_start?></span>
                     <span id='custom-maghrib-iqama-span' style='display:block;'>Iqama: <?php echo $maghrib_iqama?></span>
                 </div>
 
-                <div>
+                <div style='min-width: 160px;'>
                     <span style='display:block; font-weight:bold;'>Isha</span>
                     <span id='custom-isha-start-span' style='display:block;'>Start: <?php echo $isha_start?></span>
                     <span id='custom-isha-iqama-span' style='display:block;'>Iqama: <?php echo $isha_iqama?></span>
                 </div>
 
                 <?php if (isset($jumah1_start) || isset($jumah1_iqama)) {?>
-                <div>
+                <div style='min-width: 160px;'>
                     <span style='display:block; font-weight:bold;'>Jum'ah 1</span>
                     <span id='custom-jumah1-start-span' style='display:block;'>Khutbah: <?php if (isset($jumah1_start)) echo $jumah1_start?></span>
                     <span id='custom-jumah1-iqama-span' style='display:block;'>Iqama: <?php if (isset($jumah1_iqama)) echo $jumah1_iqama?></span>
@@ -185,7 +185,7 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
                 if (isset($jumah2_start) || isset($jumah2_iqama)) {
                 ?>
 
-                <div>
+                <div style='min-width: 160px;'>
                     <span style='display:block; font-weight:bold;'>Jum'ah 2</span>
                     <span id='custom-jumah2-start-span' style='display:block;'>Khutbah: <?php if (isset($jumah2_start)) echo $jumah2_start ?></span>
                     <span id='custom-jumah2-iqama-span' style='display:block;'>Iqama: <?php if (isset($jumah2_iqama)) echo $jumah2_iqama?></span>
