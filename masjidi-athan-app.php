@@ -111,12 +111,12 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
             $request_uri = "https://ummahsoft.org/api/masjidi/v1/masjids/$masjid_id/salahandiqamatimes/day/$current_date";
             $fp = fopen($request_uri, 'r');
 
-            $masjidiapi_response = stream_get_contents($fp); // returns false if failed or string if valid. Can return null if no body.
+            $masjidiapi_response = stream_get_contents($fp); // returns false if failed or string if valid
             if ( !is_string( $masjidiapi_response ) || $masjidiapi_response == ''  ) {
                 return '<p>Invalid masjid ID or failed to receive details from MasjidiApi</p>';
             }
 
-            $masjidiapi_response_data = json_decode($masjidiapi_response, true);
+            $masjidiapi_response_data = json_decode($masjidiapi_response, true); // Will return null if response is not JSON
 
             if ( is_null($masjidiapi_response_data) || !array_key_exists( 0, $masjidiapi_response_data ) ) {
                 return "<p>Unexpected response data format received from MasjidiApi: '$masjidiapi_response'</p>";
