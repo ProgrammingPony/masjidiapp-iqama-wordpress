@@ -11,7 +11,7 @@
  * Plugin Name:       MasjidiApp Athan/Iqama Integration
  * Plugin URI:        https://github.com/ProgrammingPony/masjidiapp-iqama-wordpress
  * Description:       Athan and Iqama widgets which integrate with the Masjidi App.
- * Version:           0.0.1
+ * Version:           0.0.2
  */
 
 if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
@@ -109,7 +109,20 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
             $current_date = (new DateTime) -> format("Y-m-d"); // This is the time of the server, need to make it client
             $request_uri = "https://ummahsoft.org/api/masjidi/v1/masjids/$masjid_id/salahandiqamatimes/day/$current_date";
             $fp = fopen($request_uri, 'r');
-            $masjidiapi_response_data = json_decode(stream_get_contents($fp), true)[0];
+
+            $masjidiapi_response = stream_get_contents($fp); // returns false if failed or string if valid. Can return null if no body.
+            if ( !is_string( $masjidiapi_response ) || $masjidiapi_response == ''  ) {
+                return '<p>Invalid masjid ID or failed to receive details from MasjidiApi</p>';
+            }
+
+            $masjidiapi_response_data = json_decode($masjidiapi_response, true);
+
+            if ( is_null($masjidiapi_response_data) || !array_key_exists( 0, $masjidiapi_response_data ) ) {
+                return "<p>Unexpected response data format received from MasjidiApi: '$masjidiapi_response'</p>";
+            }
+
+            $masjidiapi_response_data = $masjidiapi_response_data[0];
+
             fclose($fp);
 
             $fajr_start = $masjidiapi_response_data['fajr_start_time'];
