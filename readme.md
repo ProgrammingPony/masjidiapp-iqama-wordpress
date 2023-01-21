@@ -18,16 +18,17 @@ The shortcode tag `masjidiapp_current_iqama_times` is used to display the widget
 
 | Attribute Name | Default | Description | 
 | -------------- | ------- | ----------- |
-| `ShowAthan` | `true`  | Displays athan times in the widget as well. Iqama is always displayed. |
+| `ApiKey` | n/a | MasjidiAPI api key assigned to the masjid or musallah. This is not currently in use, but is required by UmmahSoft and may become mandatory in a future release. To avoid interuption in a future update for the widget to work. Configure this as soon as you can. |
 | `MasjidId` | n/a | MasjidiAPI ID assigned to the masjid or musallah. This is what we used to get the timings of the specific masjid. |
-| `ApiKey` | n/a | MasjidiAPI api key assigned to the masjid or musallah. This is not currently in use, but is required by UmmahSoft and may be required in a future release. To avoid interuption in a future update for the widget to work. Try to get this as soon as you can. |
+| `ShowAthan` | `true`  | Toggles visibility of athan times in the widget. Iqama is always displayed irrespective of this setting. |
+| `Timezone` | n/a | The data when rendering the page will be that of this timezone. This field is mandatory. Must be a timezone recognized by the system's PHP installation. \r\n See [here](https://www.php.net/manual/en/timezones.php). |
 
 Example usages
 
 | Shortcode | Description |
 | --------- | ----------- |
-| `[masjidiapp_current_iqama_times]` | Displays both the athan and iqama times using the default masjid id and api key specified in `Settings` → `MasjidiApp Iqama` admin menu. |
-| `[masjidiapp_current_iqama_times ShowAthan=false MasjidId="53368" ApiKey="api-kee"]` | Displays only the iqama times of the masjid with ID `53368` and API key `api-kee` (which is not really an API key). |
+| `[masjidiapp_current_iqama_times Timezone="America/Edmonton"]` | Displays both the athan and iqama times using the default masjid id and api key specified in `Settings` → `MasjidiApp Iqama` admin menu for the current date in Edmonton, Canada |
+| `[masjidiapp_current_iqama_times ShowAthan=false MasjidId="53368" ApiKey="api-kee" Timezone="Australia/Sydney"]` | Displays only the iqama times of the masjid with ID `53368` and API key `api-kee` (which is not really an API key). The date of the timings correspond to the current date in Sydney, Australia |
 
 ## Support
 [GitHub's issue tracking system](https://github.com/ProgrammingPony/masjidiapp-iqama-wordpress/issues) will be used to track all requests (feature requests, bugs, security, etc). Before creating a new issue check if there is an existing issue that discusses what you wanted to add first. If it exists, please add a reaction to the original post to indicate that you are impacted by this issue (for bugs) or that you are anticipating the same requested feature (enhancements). The reactions help us prioritize the most impactful bugs to address and features to implement.

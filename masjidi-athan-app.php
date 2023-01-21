@@ -11,7 +11,7 @@
  * Plugin Name:       MasjidiApp Athan/Iqama Integration
  * Plugin URI:        https://github.com/ProgrammingPony/masjidiapp-iqama-wordpress
  * Description:       Athan and Iqama widgets which integrate with the Masjidi App.
- * Version:           0.1.0
+ * Version:           0.1.1
  */
 
 if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
@@ -94,10 +94,23 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
                     'showathan' => true,
                     'masjidid' => null,
                     'apikey' => null,
+                    'timezone' => null,
                 ), $atts, $tag
             );
 
             $options = get_option( MasjidiApp_Iqama_Plugin::$settings_id );
+
+            $timezone = $parsed_atts['timezone'];
+            if ( is_null($timezone) || $timezone == '' ) {
+                return "<p>Timezone attribute must be specified and must be a timezone supported by your system's <a href='https://www.php.net/manual/en/timezones.php' target='_blank'>PHP installation</a>.</p>";
+            }
+
+            try {
+                $timezone = new DateTimeZone($timezone);
+            }
+            catch (Exception) {
+                return "<p>Timezone specified is not supported by this system's <a href='https://www.php.net/manual/en/timezones.php' target='_blank'>PHP installation</a>.</p>";
+            }
 
             $show_athan = filter_var($parsed_atts['showathan'], FILTER_VALIDATE_BOOLEAN);
             $api_key = $parsed_atts['apikey']
@@ -107,7 +120,7 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
                 ?? $options[MasjidiApp_Iqama_Plugin::$masjid_id_id]
                 ?? throw new Exception('No masjid ID was specified in the shortcode and no default was set');
 
-            $current_date = (new DateTime) -> format("Y-m-d"); // This is the time of the server, need to make it client
+            $current_date = (new DateTime('now', $timezone)) -> format("Y-m-d");
             $request_uri = "https://ummahsoft.org/api/masjidi/v1/masjids/$masjid_id/salahandiqamatimes/day/$current_date";
             $fp = fopen($request_uri, 'r');
 
