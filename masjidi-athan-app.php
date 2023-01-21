@@ -19,11 +19,6 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
     class MasjidiApp_Iqama_Plugin {
         
         public static string $plugin_name = 'masjidiapp_iqama';
-        public static string $option_group = 'masjidiapp_iqama_settings';
-        public static string $menu_slug = 'masjidiapp_iqama-menu';
-        public static string $settings_page_slug = 'masjidiapp_iqama-settings_page';
-        public static string $settings_section_id = 'masjidiapp_iqama-default_settings';
-        public static string $settings_id = 'masjidiapp_iqama-settings';
 
         public static string $api_key_id = 'masjidiapp_iqama_api-key';
         public static string $masjid_id_id = 'masjidiapp_iqama_masjid-id';
@@ -42,13 +37,17 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
         }
 
         public static function settings_init() {
-            register_setting( MasjidiApp_Iqama_Plugin::$plugin_name, MasjidiApp_Iqama_Plugin::$settings_id );
+            register_setting(
+                MasjidiApp_Iqama_Plugin::$plugin_name,
+                MasjidiApp_Iqama_Plugin::$plugin_name ); // Settings ID
 
             add_settings_section(
-                MasjidiApp_Iqama_Plugin::$settings_section_id,
+                MasjidiApp_Iqama_Plugin::$plugin_name, // Option Section Id
                 'Default Settings',
-                'MasjidiApp_Iqama_Plugin::render_settings_section_header',
-                MasjidiApp_Iqama_Plugin::$menu_slug);
+                function () {
+                    return '<span>Defaults</span>';
+                },
+                MasjidiApp_Iqama_Plugin::$plugin_name); // Menu slug name
             
             add_settings_field(
                 MasjidiApp_Iqama_Plugin::$api_key_id,
@@ -56,8 +55,8 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
                 function () {
                     return MasjidiApp_Iqama_Plugin::render_settings_field( MasjidiApp_Iqama_Plugin::$api_key_id );
                 },
-                MasjidiApp_Iqama_Plugin::$menu_slug,
-                MasjidiApp_Iqama_Plugin::$settings_section_id);
+                MasjidiApp_Iqama_Plugin::$plugin_name, // Menu slug name
+                MasjidiApp_Iqama_Plugin::$plugin_name); // Option Section Id
             
             add_settings_field(
                 MasjidiApp_Iqama_Plugin::$masjid_id_id,
@@ -65,8 +64,8 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
                 function () {
                     return MasjidiApp_Iqama_Plugin::render_settings_field( MasjidiApp_Iqama_Plugin::$masjid_id_id, true );
                 },
-                MasjidiApp_Iqama_Plugin::$menu_slug,
-                MasjidiApp_Iqama_Plugin::$settings_section_id);
+                MasjidiApp_Iqama_Plugin::$plugin_name, // Menu slug name
+                MasjidiApp_Iqama_Plugin::$plugin_name); // Option Section Id
 
         }
 
@@ -98,7 +97,7 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
                 ), $atts, $tag
             );
 
-            $options = get_option( MasjidiApp_Iqama_Plugin::$settings_id );
+            $options = get_option( MasjidiApp_Iqama_Plugin::$plugin_name ); // Settings ID
 
             $timezone = $parsed_atts['timezone'];
             if ( is_null($timezone) || $timezone == '' ) {
@@ -225,28 +224,26 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
         }
 
         public static function render_settings_field( $name, $required = false, $default_value = '' ) {
-            $options = get_option( MasjidiApp_Iqama_Plugin::$settings_id );
+            $options = get_option( MasjidiApp_Iqama_Plugin::$plugin_name ); // Settings ID
             ?>
                 <input type="text" 
-                    name="<?php echo esc_attr( MasjidiApp_Iqama_Plugin::$settings_id . '[' . $name . ']' ); ?>" 
+                    name="<?php echo esc_attr( MasjidiApp_Iqama_Plugin::$plugin_name . '[' . $name . ']' ); ?>" 
                     value="<?php echo isset( $options[ $name ] ) ? $options[ $name ] : esc_attr( $default_value ); ?>"
                     <?php if ($required) echo 'required' ?> />
             <?php
         }
 
-        public static function render_settings_section_header( $args ) {
-?>
-            <span><?php echo esc_attr( $args['id'] ); ?></span>
-<?php
-        }
-
         public static function uninstall() {
 
-            unregister_setting( MasjidiApp_Iqama_Plugin::$option_group, 'api_key' );
-            unregister_setting( MasjidiApp_Iqama_Plugin::$option_group, 'masjid_id' );
+            unregister_setting(
+                MasjidiApp_Iqama_Plugin::$plugin_name, // Option Group Name
+                'api_key' );
+            unregister_setting(
+                MasjidiApp_Iqama_Plugin::$plugin_name, // Option Group Name
+                'masjid_id' );
 
             remove_action('admin_menu', 'MasjidiApp_Iqama_Plugin::options_page');
-            remove_menu_page(MasjidiApp_Iqama_Plugin::$menu_slug);
+            remove_menu_page(MasjidiApp_Iqama_Plugin::$plugin_name); // Menu slug name
         }
 
         public static function options_page() {
@@ -254,13 +251,16 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
                 'MasjidiApp Iqama',
 			    'MasjidiApp Iqama',
                 'manage_options',
-                MasjidiApp_Iqama_Plugin::$menu_slug,
+                MasjidiApp_Iqama_Plugin::$plugin_name, // Menu slug name
                 'MasjidiApp_Iqama_Plugin::options_page_html'
             );
         }
 
         public static function options_page_html() {
             if ( ! current_user_can( 'manage_options' ) ) {
+                ?>
+                    <p>Current user has insufficient permissions to access these settings.</p>
+                <?php
                 return;
             }
 
@@ -268,7 +268,8 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
             <div class="wrap">
                 <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 
-                <p>The API Key may become mandatory in a future version. To avoid interuption on plugin update, please <a href="https://stream.masjidiapp.com/masjidiapp/2021/02/16/masjidi-api/" target="_blank">acquire one</a> as soon as possible.</p>
+                <p>Instructions on how to use this plugins can be found [here](https://github.com/ProgrammingPony/masjidiapp-iqama-wordpress#How-to-Use)</p>
+                <p>API Key is currently not a required field but may become mandatory in a future version. To avoid interuption on plugin update, please <a href="https://stream.masjidiapp.com/masjidiapp/2021/02/16/masjidi-api/" target="_blank">acquire</a> and configure one as soon as possible.</p>
 
                 <form action="options.php" method="post">
                 <?php
@@ -276,7 +277,7 @@ if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {
                     settings_fields( MasjidiApp_Iqama_Plugin::$plugin_name );
                     // output setting sections and their fields
                     // (sections are registered for "wporg", each field is registered to a specific section)
-                    do_settings_sections( MasjidiApp_Iqama_Plugin::$menu_slug );
+                    do_settings_sections( MasjidiApp_Iqama_Plugin::$plugin_name ); // Menu slug name
                     // output save settings button
                     submit_button('Save Settings');
                 ?>
