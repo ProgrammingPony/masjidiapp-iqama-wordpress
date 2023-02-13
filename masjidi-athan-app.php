@@ -12,6 +12,7 @@
  * Plugin URI:        https://github.com/ProgrammingPony/masjidiapp-iqama-wordpress
  * Description:       Athan and Iqama widgets which integrate with the Masjidi App.
  * Version:           0.1.1
+ * Requires at least: 8.0.0
  */
 
 if ( ! class_exists( 'MasjidiApp_Iqama_Plugin' ) ) {

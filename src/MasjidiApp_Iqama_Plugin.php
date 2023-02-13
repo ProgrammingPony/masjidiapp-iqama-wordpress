@@ -91,7 +91,7 @@ class MasjidiApp_Iqama_Plugin {
         try {
             $timezone = new DateTimeZone($timezone);
         }
-        catch (Exception) {
+        catch (Exception $ex) {
             return "<p>Timezone specified is not supported by this system's <a href='https://www.php.net/manual/en/timezones.php' target='_blank'>PHP installation</a>.</p>";
         }
 
